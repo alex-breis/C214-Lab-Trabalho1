@@ -7,6 +7,7 @@ class Tarefa{
 }
 
 class Gerenciador{
+    
     listaTarefas = [];
 
     adicionarTarefa(tarefa){
@@ -18,33 +19,45 @@ class Gerenciador{
         return this.listaTarefas
     }
 
-    atualizarStatus(titulo,opc){
+    procurarTarefa(titulo){
         for (let i = 0; i < this.listaTarefas.length; i++) {
             if (this.listaTarefas[i].titulo === titulo){
-                if (opc === '1') {
-                    this.listaTarefas[i].status = 'A fazer'
-                    console.log("Atualizado");
-                } else if (opc === '2'){
-                    this.listaTarefas[i].status = 'Em andamento'
-                    console.log("Atualizado");
-                } else if (opc === '3'){
-                    this.listaTarefas[i].status = 'Concluída'
-                    console.log("Atualizado");
-                } else {
-                    console.log("Opção Invalida");
-                }
-                break
+                return i
             }   
+        }
+        return -1
+    }
+
+    atualizarStatus(titulo,opc){
+        let index_tarefa = this.procurarTarefa(titulo)
+        if (index_tarefa != -1) {
+            let tarefa = this.listaTarefas[index_tarefa]
+            if (opc === '1') {
+                tarefa.status = 'A fazer'
+                return "Atualizado"
+            } else if (opc === '2'){
+                tarefa.status = 'Em andamento'
+                return "Atualizado"
+            } else if (opc === '3'){
+                tarefa.status = 'Concluída'
+                return "Atualizado"
+            } else {
+                return "Opção Invalida"
+            }
+        }
+        else {
+            return 'Tarefa não encontrada'
         }
     }
 
     excluirTarefa(titulo){
-        for (let i = 0; i < this.listaTarefas.length; i++) {
-            if (this.listaTarefas[i].titulo === titulo){
-                this.listaTarefas.splice(i,1)
-                console.log('Tarefa excluida');
-                break
-            }   
+        let index_tarefa = this.procurarTarefa(titulo)
+        if (index_tarefa != -1) {
+            this.listaTarefas.splice(index_tarefa,1)
+            console.log('Tarefa excluida');
+        }
+        else {
+            console.log('Tarefa não encontrada');
         }
     }
 }
@@ -86,7 +99,7 @@ function iniciarMenu(){
             case '3':              
                 rl.question('Entre com o titulo da tarefa: ', function(titulo) {
                     rl.question('Escolha o status: \n1-A Fazer \n2-Em Andamento \n3-Concluída\n', function(opc) {
-                        gerenciador.atualizarStatus(titulo,opc)
+                        console.log(gerenciador.atualizarStatus(titulo,opc))
                         iniciarMenu()
                     });
                 });
@@ -114,3 +127,6 @@ function iniciarMenu(){
 }
 
 iniciarMenu()
+
+
+module.exports = { Tarefa, Gerenciador }; // Exporta as funções da calculadora

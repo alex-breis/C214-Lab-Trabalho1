@@ -1,0 +1,16 @@
+{
+  "name": "c214-lab-trabalho1",
+  "version": "1.0.0",
+  "description": "Repositório para o trabalho 1 de C214 - Testes Unitários.",
+  "main": "trabalho.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.8",
+    "mocha": "^10.2.0"
+  }
+}
