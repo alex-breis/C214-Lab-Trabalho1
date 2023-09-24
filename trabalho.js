@@ -4,26 +4,53 @@ class Tarefa{
         this.descricao = descricao;
         this.status = 'A fazer';
     }
+}
 
-    atualizarStatus(opc){
-        if (opc === '1') {
-            this.status = 'A fazer'
-            console.log("Atualizado");
-        } else if (opc === '2'){
-            this.status = 'Em andamento'
-            console.log("Atualizado");
-        } else if (opc === '3'){
-            this.status = 'Concluída'
-            console.log("Atualizado");
-        } else {
-            console.log("Opção Invalida");
+class Gerenciador{
+    listaTarefas = [];
+
+    adicionarTarefa(tarefa){
+        this.listaTarefas.push(tarefa)
+        console.log('Tarefa adicionado a lista!');
+    }
+
+    exibirLista (){
+        return this.listaTarefas
+    }
+
+    atualizarStatus(titulo,opc){
+        for (let i = 0; i < this.listaTarefas.length; i++) {
+            if (this.listaTarefas[i].titulo === titulo){
+                if (opc === '1') {
+                    this.listaTarefas[i].status = 'A fazer'
+                    console.log("Atualizado");
+                } else if (opc === '2'){
+                    this.listaTarefas[i].status = 'Em andamento'
+                    console.log("Atualizado");
+                } else if (opc === '3'){
+                    this.listaTarefas[i].status = 'Concluída'
+                    console.log("Atualizado");
+                } else {
+                    console.log("Opção Invalida");
+                }
+                break
+            }   
         }
     }
 
+    excluirTarefa(titulo){
+        for (let i = 0; i < this.listaTarefas.length; i++) {
+            if (this.listaTarefas[i].titulo === titulo){
+                this.listaTarefas.splice(i,1)
+                console.log('Tarefa excluida');
+                break
+            }   
+        }
+    }
 }
 
 const readline = require('readline');
-const listaTarefas = [];
+const gerenciador = new Gerenciador();
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -45,27 +72,21 @@ function iniciarMenu(){
                 rl.question('Entre com o titulo da tarefa: ', (titulo) => {
                     rl.question('Entre com a descrição: ', (descricao) => {
                                 const tarefa = new Tarefa (titulo,descricao);
-                                listaTarefas.push(tarefa)
-                                console.log('Tarefa adicionado a lista!');
+                                gerenciador.adicionarTarefa(tarefa)
                                 iniciarMenu()
                     });
                 });
                 break;
     
             case '2':
-                console.log(listaTarefas);
+                console.log(gerenciador.exibirLista());
                 iniciarMenu()
                 break;
 
             case '3':              
                 rl.question('Entre com o titulo da tarefa: ', function(titulo) {
                     rl.question('Escolha o status: \n1-A Fazer \n2-Em Andamento \n3-Concluída\n', function(opc) {
-                        for (let i = 0; i < listaTarefas.length; i++) {
-                            if (listaTarefas[i].titulo === titulo){
-                                listaTarefas[i].atualizarStatus(opc)
-                                break
-                            }   
-                        }
+                        gerenciador.atualizarStatus(titulo,opc)
                         iniciarMenu()
                     });
                 });
@@ -73,13 +94,7 @@ function iniciarMenu(){
             
             case '4':            
                 rl.question('Entre com o titulo da tarefa: ', function(titulo) {
-                        for (let i = 0; i < listaTarefas.length; i++) {
-                            if (listaTarefas[i].titulo === titulo){
-                                listaTarefas.splice(i,1)
-                                console.log('Tarefa excluida');
-                                break
-                            }   
-                        }
+                        gerenciador.excluirTarefa(titulo)
                         iniciarMenu()
                 });
                 break;
