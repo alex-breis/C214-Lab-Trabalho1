@@ -23,11 +23,9 @@ describe('Gerenciador de tarefas', () => {
 
     it('Adicionar uma tarefa, OK', () => {
         const tarefa = new Tarefa('Teste', 'Descrição');
-
-        listaTarefas_esperada.push(tarefa)
         gerenciador.adicionarTarefa(tarefa)
 
-        expect(listaTarefas_esperada).to.contain(tarefa);
+        expect(gerenciador.listaTarefas).to.contain(tarefa);
     });
 
     it('Visualizar tarefas, OK', () => {
@@ -43,17 +41,17 @@ describe('Gerenciador de tarefas', () => {
         expect(tarefa.status).to.equal('Em andamento');
     });
 
+    it('Excluir tarefas, OK', () => {
+        gerenciador.excluirTarefa('Tarefa1');
+
+        expect(gerenciador.listaTarefas).to.not.contain(tarefa1);
+    });
+
     it('Atualizar tarefas, Status inválido', () => {
         let nome_tarefa = 'Tarefa1'
         let resposta = gerenciador.atualizarStatus(nome_tarefa, '5')
 
         expect(resposta).to.equal("Opção Invalida");
-    });
-
-    it('Excluir tarefas, OK', () => {
-        gerenciador.excluirTarefa('Tarefa1');
-
-        expect(gerenciador.listaTarefas).to.not.contain(tarefa1);
     });
 
     it('Procurar tarefas, tarefa não encontrada', () => {
